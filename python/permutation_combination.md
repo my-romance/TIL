@@ -58,9 +58,7 @@ import itertools
 
 elements = ['A','B','B','C'] # 중복되는 원소가 있을 경우
 con_list = (list(map(''.join, itertools.combinations(elements,3)))) 
-print(con_list)
 con_list = (list(map(''.join, itertools.combinations(elements,2))))
-print(con_list)
 ```
 
 ['ABB', 'ABC', 'ABC', 'BBC']
