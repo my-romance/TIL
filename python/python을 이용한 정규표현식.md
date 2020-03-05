@@ -442,4 +442,4 @@ abc 12 15 (12, 15)
 ### 참고
 
 - https://wikidocs.net/21703
-- https://wikidocs.net/4308#finditer
+- https://wikidocs.net/4308
