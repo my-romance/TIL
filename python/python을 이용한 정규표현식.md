@@ -236,7 +236,7 @@
   <_sre.SRE_Match object; span=(0, 10), match='aaaaaaaabc'> 
   ```
 
-- \[ \] 기호
+- \[\] 기호
   Example : 정규표현식 [abc] → a 또는 b 또는 c, 정규표현식 [a-zA-Z] → 알파벳 하나
 
   ```python
