@@ -11,7 +11,7 @@ def solution(N, number):
         
         # (next_index+1)개의 N을 사용하여 만들수 있는 모든 수 계산하여 temp_list에 저장
         # temp_list에는 우선 N을 연속으로 (next_index+1)개만큼 "나열"하여 만드는 수를 계산하여 저장
-        temp_list, next_index = [int((str(N))*(next_index+1))], index+1
+        next_index = index+1; temp_list =  [int((str(N))*(next_index+1))]
         for i in range((next_index+1)//2) : # N의 갯수가 4일 경우, 만들 수 있는 모든 조합은 (N 갯수:1개,3개), (N 갯수:2개,2개) 인경우
             j = next_index - (i+1)
             i_arr = answer_list[i]; j_arr = answer_list[j];
