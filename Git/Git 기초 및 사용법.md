@@ -1,4 +1,4 @@
-# Git 기초 및 사용법
+# GitHub 기초 및 사용법
 
 ### GitHub란
 
@@ -36,34 +36,86 @@
 
 
 
-### Git 사용하기
+### GitHub 사용하기
 
-1. Working Directory 생성하기
-2. 문서작성하기
+0. git 프로세스
 
+   ![git process](https://miro.medium.com/max/1400/1*X9TKjhjwestOvFD0RsjoNQ.png)
 
+   - Working Directory : 작업하려는 PC내의 directory
+   - Staging Area : git commit 하기전에 저장되는 git 공간 (커밋 예정인 파일, 디렉터리가 모여있는 공간)
+   - Local Repository : PC에 파일이 저장되는 개인용저장소
+   - Remote Repository : 원격 저장소 (git hub)
 
-### Git 명령어 정리
+1. Working Directory 생성 및 Working Directory에 들어가기
 
-- git 수정 이전으로 내용 되돌리기
-  https://www.lesstif.com/gitbook/git-54952660.html
+2. git config
 
-- git 파일이나 폴더이름 변경
-  https://www.lesstif.com/gitbook/git-git-rename-file-or-folder-54952878.html
+   ```
+   git config --global user.name <닉네임>
+   gin config --global user.email <이메일>
+   ```
 
-- git 폴더 삭제
+3. git init
 
-  https://hoho325.tistory.com/46
+   `git init` 명령어를 통해 깃 저정소를 생성.
+
+4. git clone
+
+   `git clone` 명령어를 통해 저장소 가져오기. 이 명령어를 통해 git init까지 자동으로 설정됨.
+
+   git clone \<git url\>.git
+
+5. git remote 
+
+   `git remote` 명령어를 통해 git url 설정
+
+   ```
+   git remote -v 															# 저장소 url 확인
+   git remote add <저장소이름> <git url>.git 			# 저장소 url 추가
+   git remote delete <저장소 이름> 								# 저장소 url 삭제
+   git remote set-url <저장소 이름> <git url>.git # 저장소 url 수정
+   ```
+
+6. git status
+   `git status` 명령어를 통해 git의 상태 확인
+   ![git](https://seonkyukim.github.io/assets/images/2019-02-24-git-status/04.png)
+
+   워킹 디렉토리의 파일은 크게 tracked, untracked 두가지 상태로 나뉨
+
+   - tracked : 파일에 수정이 일어나면 git이 파일의 변경을 감지하여 사용자에게 알려주는 것과 같이 파일을 추적하는 상태
+   - untracked : tracked 상태와는 반대로, 파일을 저장소에 저장할 필요가 없어 git이 신경쓰지 않아도 되는 상태
+
+   파일을 새로 만들 경우 untrakced 상태 (git이 파일을 추적하지 않는 상태)가 됨 → git 저장소에 저장할 필요가 없는 파일들을 untrakced 상태로 두면 됨. 이후 `git add` 명령얼르 이용하여 파일을 add 해주면, 해당 파일은 staging area에 저장되어 tracked 상태가 됨.
+
+   
+
+   tracked 상태의 파일들은 크게 Unmodified, Modified, Staged 3개의 상태로 나뉨
+
+   - Staged : staging area에 있는 파일들의 상태
+   - Unmodified : staging area에 있는 파일들을 commit하면 해당 파일들은 하나의 commit으로 저장된 후, 파일의 상태는 unmodified 상태가 됨
+   - Modified : Unmodified 상태의 파일들을 수정하면 Modified 상태가 됨
+
+   이후 다시 `git add` 명령어를 이용하여 Staged 상태로 올려준 후 commit을 하는 과정을 반복하게 됨. 
+
+   또한, tracked 상태에서 untracked 상태로 내려가기 위해선 `git rm --cached <fileName>` 명령어를 사용해야함.
+
+   
+
+   git status 명령어를 실행했을 때의 결과
+
+   - Untracked : Untrakced files 명단에 있는 빨간색 파일들이 Untracked 상태 
+   - Staged : Changes to be committed 명단에 있는 초록색 파일들이 Staged 상태
+   - Modified : Changes not staged for commit 명단에 잇는 빨간색 파일들이 Modified 상태. ( `git commit` 명령어는 Staging Area의 파일들만 커밋하기에, 파일들은 수정한 경우 `git add` 명령어를 통해 변경 파일을 Staging Area에 올려주고 commit하기)
+   - Unmodified : 성공적으로 커밋을 진행한 후, 수정하지 않은 파일들(Unmodified 상태의 파일들)은 화면에 출력되지 않음. 
 
 
 
 ### 참고 문서
 
-https://medium.com/@psychet_learn/git-%EC%82%AC%EC%9A%A9%EB%B2%95-3%EC%9E%A5-github-%EC%9D%B4%EC%9A%A9%ED%95%98%EA%B8%B0-f53e765844e3
-
 https://rogerdudler.github.io/git-guide/index.ko.html
 
 https://medium.com/webeveloper/%EA%B9%83%ED%97%88%EB%B8%8C-%EC%82%AC%EC%9A%A9%EB%B0%A9%EB%B2%95-github-tutorials-4a63f31bb6a5
 
-https://tagilog.tistory.com/377
+https://seonkyukim.github.io/git-tutorial/git-status/#
 
