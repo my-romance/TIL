@@ -47,7 +47,7 @@ test_poetry_demo
 
 - Pyproject.toml 
 
-  프로젝트와 의존성을 조율해주는 가장 중요한 파일.
+  프로젝트와 의존성을 관히하는 가장 중요한 파일.
   파일을 아래와 같이 생겼으며, **만약 의존성을 프로젝트에 추가하고 싶다면 tool.poetry,dependencies에 지정**
 
   poetry는 이 정보를 repositories에서 패키지를 찾을 때 사용하는데, tool.poetry.repositories(=패키지를 찾는 곳)는 기본적으로 PyPI.
@@ -65,11 +65,58 @@ test_poetry_demo
   pytest = "^3.4"
   ```
 
-  또한 pryproject.toml 파일을 변경할 필요 없이 아래 명령어를 통해 수정이 가능. requirements.txt는 개발자가 계속 업데이트 해주어야 하지만 poetry는 알아서 add 해주는 것이 장점.
+  ------
+
+
+  pyproject.toml 파일을 변경할 필요 없이 아래 명령어를 통해 의존성 추가 및 수정이 가능.
 
   ```
-  poetry add <사용할 의존성 ex : django>
+  poetry add <사용할 의존성 ex : transformers>
   ```
+
+  출력 :
+
+  <img src="/Users/aiden/Library/Application Support/typora-user-images/image-20200915002511337.png" alt="image-20200915002511337" style="zoom:50%;" align="left">
+
+  `poetry add transformers=2.7.0` 명령어 후, pyproject.toml 결과
+
+  ```
+  name = "newBrand_ver9"
+  version = "0.1.0"
+  description = ""
+  authors = ["my-romanve <jisu.ponyo@gmail.com>"]
+  
+  [tool.poetry.dependencies]
+  python = "^3.7"
+  transformers = "2.7.0"
+  
+  [tool.poetry.dev-dependencies]
+  pytest = "^5.2"
+  
+  [build-system]
+  requires = ["poetry>=0.12"]
+  build-backend = "poetry.masonry.api"
+  ```
+
+  출력의 4번째 "writing lock file"에서 생성되는 파일이 바로 **poetry.lock**파일인데, **poetry.lock** 파일이 있으면 작성하고 있는 프로젝트의 의존성과 완전히 동일한 의존성을 가지도록 할 수 있음. 
+
+  ------
+
+
+  또한, requirements.txt는 개발자가 계속 업데이트 해주어야 하지만 poetry는 아래 명령어를 통해 알아서 update 해주는 것이 장점.
+
+  ```
+  # 패키지 업데이트
+  poetry update
+  
+  # 하나씩 지정해서 업데이트
+  poetry update requests toml
+  
+  # 업데이트는 하지 않고 poetry.lock만 업데이트
+  poetry update --lock
+  ```
+
+  
 
 - poetry.lock
   프로젝트에 정의된 의존성 파일들을 설치하기 위해 아래 명령어를 사용
@@ -87,10 +134,6 @@ test_poetry_demo
      이미 poetry.lock 파일이 있다면 이전에 install 명령어를 시행한 이력이 있는 것. 
      이 때 일관성 유지를 하기 위해 install 명령어를 시행하더라도 최신버전을 설치하는 것이 아니라, 새로운 버전이 Released 됐더라도 lock 설정에 맞는 파일을 다운받게 됨. 
      만약 최신 버전으로 업데이트 하고 싶으면 update 명령어 사용하기.
-
-
-
-
 
 
 
