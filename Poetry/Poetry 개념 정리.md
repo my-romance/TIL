@@ -47,7 +47,7 @@ test_poetry_demo
 
 - Pyproject.toml 
 
-  프로젝트와 의존성을 관히하는 가장 중요한 파일.
+  프로젝트와 의존성을 관리하는 가장 중요한 파일.
   파일을 아래와 같이 생겼으며, **만약 의존성을 프로젝트에 추가하고 싶다면 tool.poetry,dependencies에 지정**
 
   poetry는 이 정보를 repositories에서 패키지를 찾을 때 사용하는데, tool.poetry.repositories(=패키지를 찾는 곳)는 기본적으로 PyPI.
@@ -78,6 +78,34 @@ test_poetry_demo
 
   <img src="/Users/aiden/Library/Application Support/typora-user-images/image-20200915002511337.png" alt="image-20200915002511337" style="zoom:50%;" align="left">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   `poetry add transformers=2.7.0` 명령어 후, pyproject.toml 결과
 
   ```
@@ -98,9 +126,9 @@ test_poetry_demo
   build-backend = "poetry.masonry.api"
   ```
 
-  출력의 4번째 "writing lock file"에서 생성되는 파일이 바로 **poetry.lock**파일인데, **poetry.lock** 파일이 있으면 작성하고 있는 프로젝트의 의존성과 완전히 동일한 의존성을 가지도록 할 수 있음. 
+ 출력의 4번째 "writing lock file"에서 생성되는 파일이 바로 **poetry.lock**파일인데, **poetry.lock** 파일이 있으면 작성하고 있는 프로젝트의 의존성과 완전히 동일한 의존성을 가지도록 할 수 있음. 
 
-  ------
+------
 
 
   또한, requirements.txt는 개발자가 계속 업데이트 해주어야 하지만 poetry는 아래 명령어를 통해 알아서 update 해주는 것이 장점.
