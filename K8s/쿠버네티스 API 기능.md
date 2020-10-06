@@ -39,14 +39,14 @@ spec:
 
 ### JobStatus v1 batch
 
-| Field           | Description                          |
-| --------------- | ------------------------------------ |
-| active: integer | The numver of actively running pods. |
-| completionTime  | o[p]oi                               |
-|                 |                                      |
-|                 |                                      |
-|                 |                                      |
-|                 |                                      |
+| Field                    | Description                                                  |
+| ------------------------ | ------------------------------------------------------------ |
+| active: integer          | The number of actively running pods.                         |
+| completionTime: Time     | **Representations time when the job was completed.** (It's not guaranteed to be set in happens-before order across separate operations. It's represented in RFC3339 form and is in UTC.) |
+| conditions: JobCondition | The latest available observations of an object's current state. |
+| failed                   | The number of pods which reached phase Failed.               |
+| startTime: Time          | Representations time when the job was acknowledged by the job controller. (It is not guaranteed to be set in happens-before order across separate operations. It is represented in RFC3339 form and is in UTC.) |
+| Succeeded: integer       | The number of pods which reached phase Succeeded.            |
 
 
 
