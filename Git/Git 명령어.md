@@ -16,6 +16,10 @@ git config --global user.email <user.email>
 
 
 
+### git pull reqeust 
+
+
+
 
 
 ### git 수정 이전으로 내용 되돌리기

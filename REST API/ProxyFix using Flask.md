@@ -2,7 +2,7 @@
 
 ### 문제점
 
-Running a secure HTTPS website is important, but encrypting and decrypting HTTPS traffic is computationally expensive. Many people running large-scale websites (including [Heroku](https://www.heroku.com/)) use a [TLS termination proxy](https://en.wikipedia.org/wiki/TLS_termination_proxy) to reduce load on the HTTP server. This works great, but means that the webserver running your Flask application is actually speaking HTTP, not HTTPS. As a result, Flask-Dance can get confused, and generate callback URLs that have an `http://` scheme, instead of an `https://` scheme. This is bad, because OAuth requires that all connections use HTTPS for security purposes, and OAuth providers will reject requests that suggest a callback URL with a `http://` scheme.
+Running a secure HTTPS website is important, but encrypting and decrypting HTTPS traffic is computationally expensive. Many people running large-scale websites (including [Heroku](https://www.heroku.com/)) use a [TLS termination proxy](https://en.wikipedia.org/wiki/TLS_termination_proxy) to reduce load on the HTTP server**. This works great, but means that the webserver running your Flask application is actually speaking HTTP, not HTTPS.** As a result, Flask-Dance can get confused, and generate callback URLs that have an `http://` scheme, instead of an `https://` scheme. This is bad, because OAuth requires that all connections use HTTPS for security purposes, and OAuth providers will reject requests that suggest a callback URL with a `http://` scheme.
 
 ### 해결방안 (ProxyFix 사용이유)
 

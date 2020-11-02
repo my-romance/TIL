@@ -17,15 +17,28 @@ mecab --version # 설치 버전 확인
 
 ### mecab 한국어 사전 설치
 
-[mecab 한국어 사전 (bitbucket)](https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/) 에서 최신 버전을 다움 
+[mecab 한국어 사전 (bitbucket)](https://bitbucket.org/eunjeon/mecab-ko-dic/downloads/) 에서 최신 버전을 다운 
 
-```
+```shell
 tar -zxvf mecab-ko-dic-2.1.1-20180720.tar.gz
 cd mecab-ko-dic-2.1.1-20180720
 ./configure
 make
 sudo make install
 ```
+
+- 이때 cent os 등에서 `make` 명령을 실행할 때, `syntax error near unexpected token 'mecab-ko-dic'` 에러(gcc와 autotools 버전이 낮아서 생기는 문제같다고 해당 [링크](http://eunjeon.blogspot.com/2013/02/cent-os-59-mecab-mecab-ko-dic.html)에서 설명)가 발생하는 경우에는 `./configure` 명령 실행전에 `autoreconf -vi` 명령 실행하기
+
+  ```shell
+  tar -zxvf mecab-ko-dic-2.1.1-20180720.tar.gz
+  cd mecab-ko-dic-2.1.1-20180720
+  autoreconf -vi
+  ./configure
+  make
+  sudo make install
+  ```
+
+  
 
 테스트 명령어
 
