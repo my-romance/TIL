@@ -16,6 +16,16 @@ git config --global user.email <user.email>
 
 
 
+### git 특정 version(or branch) clone
+
+```shell
+git clone -b {특정 version or 특정 브랜치명} {git 주소}
+# 예시
+git clone -b v2.7.0 https://github.com/huggingface/transformers.git
+```
+
+하지만 그냥 clone한 후, 특정 branch를 가져와도 됨
+
 ### git pull reqeust 
 
 1. remote 설정 및 변경
