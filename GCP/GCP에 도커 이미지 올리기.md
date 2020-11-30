@@ -17,6 +17,15 @@
    # 예시 : docker tag centos:7 asia.gcr.io/[프로젝트 ID]/centos:7
    ```
 
+   이후 도커이미지 올리기
+
+   ```shell
+   docker push [Google Container Registry 호스트명]/[프로젝트 ID]/[이미지명]:[태그명]
+   # 예시 : docker push centos:7 asia.gcr.io/[프로젝트 ID]/centos:7
+   ```
+
+   
+
 4. 도커 이미지 다운로드
 
    ```shell
