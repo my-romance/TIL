@@ -21,7 +21,7 @@
 
    ```shell
    docker push [Google Container Registry 호스트명]/[프로젝트 ID]/[이미지명]:[태그명]
-   # 예시 : docker push centos:7 asia.gcr.io/[프로젝트 ID]/centos:7
+   # 예시 : docker push asia.gcr.io/[프로젝트 ID]/centos:7
    ```
 
    

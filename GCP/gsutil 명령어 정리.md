@@ -21,7 +21,9 @@ gsutil du -s gs://버킷이름             # 버킷 용량 확인
 gsutil mb gs://버킷이름                # 버킷 생성
 gsutil rb gs://버킷이름                # 버킷 삭제
 gsutil cp 로컬 파일 위치 gs://버킷이름   # 로컬 -> 버킷 복사
+gsutil cp -r 로컬 파일 위치 gs://버킷이름   # 로컬 -> 버킷 폴더 복사
 gsutil cp gs://버킷이름 로컬 파일 위치   # 버킷 -> 로컬 복사
+gsutil cp -r gs://버킷이름 로컬 파일 위치   # 버킷 -> 로컬 폴더 복사
 gsutil mv 로컬 파일 위치 gs://버킷이름   # 로컬 -> 버킷 이동
 gsutil mv gs://버킷이름 로컬 파일 위치   # 버킷 -> 로컬 이동
 gsutil rm gs://버킷이름/파일이름        # 파일 삭제
