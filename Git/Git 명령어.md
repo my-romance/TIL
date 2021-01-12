@@ -26,6 +26,8 @@ git clone -b v2.7.0 https://github.com/huggingface/transformers.git
 
 하지만 그냥 clone한 후, 특정 branch를 가져와도 됨
 
+
+
 ### git pull reqeust 
 
 1. remote 설정 및 변경
@@ -69,6 +71,18 @@ git clone -b v2.7.0 https://github.com/huggingface/transformers.git
 6. Merge 이후 동기화 및 branch 삭제
 
    Merge가 완료되면 로컬 코드와 원본 코드를 병합하고, 최신의 상태를 유지하기 위해 동기화
+
+
+
+
+
+### **git commit -amend** (commit message 변경하기)
+
+아래와 같은 명령어를 통해 commit message를 변경할 수 있음
+
+```shell
+git commit -amend
+```
 
 
 
@@ -194,6 +208,28 @@ git rm -f --cached {지우고자 하는 폴더명 or 파일명} # 원격 저장�
 git commit rm {지운 하는 폴더명 or 파일명}
 git push origin {branch name}
 ```
+
+
+
+### Git init (저장소 생성)
+
+`git init` 명령어를 통해, 현재 디렉토리를 기준으로 git 저장소 생성 → `.git` 디렉토리가 생성됨
+
+그 이후, 원격 저장소인 github에 올리기 위해 `git remote` 명령어를 통해 로컬 저장소와 원격 저장소를 연결
+
+
+
+### git remote (원격 저장소 연결)
+
+ `git remote` 명령어를 통해 로컬 저장소와 원격 저장소를 연결
+
+```shell
+git remote add origin https://github.com/<본인계정>/<project명>
+```
+
+
+
+
 
 
 
