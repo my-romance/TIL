@@ -105,6 +105,19 @@ transformers = "2.7.0"
 
 
 
+###  의존성 삭제 (remove)
+
+아래와 같이, `remove` 명령어를 통해 의존성 삭제 가능
+
+```shell
+poetry remove <지우고자 하는 패키지명>
+
+# 예제
+poetry remove falsk
+```
+
+
+
 ### 의존성 최신으로 업데이트 (update)
 
 아래 명령어를 사용하면 의존성을 최신으로 업데이트하고 poetry.lock 파일 업데이트. (이 명령어는 poetry.lock 파일을 삭제한 후, `poetry install` 하는것과 동일)
