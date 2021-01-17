@@ -107,7 +107,7 @@ git reset {돌아갈 commit}
 
 그냥 reset을 이용한 경우, reset으로 돌아온 커밋 이후의 변경사항은 모두 unstaged 영역에 남는다. 즉 reset을 통해 아래와 같이 `32edd1ed` commit으로 돌아간 경우, `9190a3ac`에서 변경했던 코드들이 unstaged 영역에 남게 됨.
 
-여기서 기존 코드들을 `git add`, `git commit` 을 해주면 다시 기존 상태(`9190a3ac`)로 돌아오게 된다.
+만약 로컬까지만 저장된 커밋인 경우는 이 `git reset` 명령어를 통해 쉽게 커밋을 되돌릴 수 있다.
 
 ```
 commit 9190a3ac
@@ -115,6 +115,8 @@ commit 32edd1ed (HEAD)
 commit 7f4d2367
 commit b61f5f6e
 ```
+
+여기서 기존 코드들을 `git add`, `git commit` 을 해주면 다시 기존 상태(`9190a3ac`)로 돌아오게 된다.
 
 **soft reset**
 
@@ -170,7 +172,51 @@ git reset --hard {돌아갈 commit}
    git reset --hard 32edd1ed
    ```
 
-**만약 특정 commit에 변경사항을 추가하고 싶은 의도라면, reset보다는 rebase를 추천**
+**만약 특정 commit에 변경사항을 추가하고 싶은 의도라면, reset보다는 revert를 추천**
+
+
+
+### git revert (이전 commit 으로 돌아가기)
+
+git reset과는 다르게 revert 커밋을 커밋 히스토리에 쌓고 이전 commit으로 돌아가는 방법.
+
+즉, 특정 커밋을 되돌리는 작업도 하나의 커밋으로 간주하여 커밋 히스토리에 추가하여, 내가 되돌린 작업을 다른 팀원들에게도 공유 할 수 있음. 사용하는 방법은 `git reset`과 비슷하다
+
+```shell
+git revert {되돌리고 싶은 commit's hash}
+```
+
+하지만 이와 같은 명령어로 다수의 commit을 되돌리기 위해선 커밋 히스토리가 A → B → C 인 경우, C → B → A 순으로 `revert`를 하나씩 실행해주어야 하고, revert한 갯수만큼 revert 커밋 생성. 하지만 이를 해결할 수 있는 파라미터가 있으니 적절하게 사용하도록 한다.
+
+- 다수 commit의 `revert`를 한번에 실행
+
+  여러개의 커밋을 한번에 `revert`하기 위해서는 특정 커밋의 hash가 아닌 `[되돌리고 싶은 커밋의 범위]`를 인수로 입력
+
+  ```shell
+  git revert HEAD~3.. # 또는 master~3..master
+  ```
+
+- revert 커밋 생성 X
+
+  `--no-commit` 파라미터를 사용하면 revert 커밋이 자동적으로 생성되는 것이 아니라 working tree와 index(staging area)에만 변경 사항이 적용됨
+
+  ```shell
+  git revert --no-commit {되돌리고 싶은 commit's hash}
+  ```
+
+  이때, 마지막으로 index에 올라간 변경들을 한꺼번에 커밋한 다음, 원격 저장소에 푸시하면 된다. 아래 코드 참조
+
+  ```shell
+  git commit -m 'Revert "Commit C, B, A"'
+  ```
+
+- commit revert를 한번에 실행 & revert 커밋은 생성 X
+
+  ```shell
+  git revert --no-commit HEAD~3.. # 또는 master~3..master	
+  ```
+
+  
 
 
 
