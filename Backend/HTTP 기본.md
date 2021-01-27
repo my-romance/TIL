@@ -136,14 +136,32 @@
 - HTTP 요청 메시지 (Request)
   - 예시
     <img src="https://media.vlpt.us/images/gparkkii/post/0a8a066b-b53b-4c86-a522-32e848c5f54f/HTTP_Request.png" alt="HTTP_Request" style="zoom:80%;" />
-
+- 구성 요소
+    - method : HTTP 메서드는 보통 클라이언트가 수행하고자 하는 동작을 정의한 `GET, POST, OPTIONS. HEAD` 를 지칭. 
+    - path : 가져오려는 리소스의 경로. 프로토콜(예 : `http://`), 도메인(예 : `developer.mozilla.org`), TCP 포트(예 : `80`) 요소들을 제거한 리소스의 URL
+    - version of the protocol : HTTP 프로토콜의 버전
+    - Headers : 서버에 대한 추가 정보를 전달하는 선택적 헤더들
+    - etc : POST와 같은 몇 가지 메서도를 위한, 전송된 리소스를 포함하는 응답의 본문과 유사한 본문
+  
 - HTTP 응답 메시지 (Response)
 
   - 예시
 
     <img src="https://media.vlpt.us/images/gparkkii/post/c5ee6879-e3af-49f9-a8d0-5922b49c53ce/HTTP_Response.png" alt="HTTP_Response" style="zoom:80%;" />
+    
+  - 구성요소
+  
+    - version of the protocol : HTTP 프로토콜의 버전
+    - status code : 요청의 성공 여부와 그 이유를 나타내는 상태코드
+    - status message : 아무런 영향력이 없는, 상태 코드의 짧은 설명을 나타내는 상태 메시지
+    - headers : 요청 헤더와 비슷한, HTTP 헤더들
+    - etc : 선택 사항으로, 가져온 리소스가 포함되는 본문.
+  
+- 
 
 ### 단순함, 확장가능
+
+
 
 
 
