@@ -131,3 +131,9 @@
     - 이런 제약을 해결하기 위해 `동사로 된 리소스 경로` 를 사용
     - 위에서는  /new, /edit, /delete가 컨트롤 URI
     - HTTP 메서드로 해결하기 애매한 경우 사용함 (HTTP API 포함)
+
+
+
+## 참고 자료
+
+- https://velog.io/@dnstlr2933/HTTP-API-%EC%84%A4%EA%B3%84 
