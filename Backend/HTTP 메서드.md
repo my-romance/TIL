@@ -101,12 +101,6 @@
 
 
 
-## GET VS POST
-
-- https://mommoo.tistory.com/60
-
-
-
 
 
 ## 참고자료
