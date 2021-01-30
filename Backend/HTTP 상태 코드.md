@@ -58,19 +58,21 @@
 
 ## 4XX : 요청 오류 상태 코드
 
-- 400 `Bad Request` :
-- 401 `Unauthorized` 
-- 402 `Payment Required` 
-- 403 `Forbidden` 
-- 404 `Not found` 
-- 405 `Method Not Allowed` 
-- 406 `Not Acceptable` 
-- 407 `Proxy Authentication Required` 
-- 408 `Request Timeout` 
-- 409 `Conflict` 
-- 410 `Gone` 
-- 411 `Length Required` 
-- 412 `Precondition Failed` 
+- 400 `Bad Request` : 클라이언트가 올바르지 못한 요청을 보내고 있음을 의미
+- 401 `Unauthorized` : 인증이 필요함을 의미. 서버는 로그인이 필요한 페이지에 대해 이 요청을 제공할 수 있음. 상태 코드 이름은 권한없음으로 되었이지만, 사실 실제 의미는 인증 안됨에 더 가까움. 클라이언트는 요청한 응답을 받기 위해서 스스로 인증해야 함
+- 402 `Payment Required`  : 결제가 필요함을 의미
+- 403 `Forbidden` : 서버가 요청을 거부함. (예시 : 사용자가 리소스에 대한 필요 권한을 가지고 있지 않는 경우)
+  즉, 401은 인증 실패 403는 인가 실패라고 볼 수 있음
+- 404 `Not found` : 서버가 요청한 페이지를 찾을 수 없음을 의미. (예시 : 서버에 존재하지 않는 페이지에 대한 요청이 있는 경우)
+- 405 `Method Not Allowed`  : 요청에 지정된 방법을 사용할 수 X. (예시 : POST 방식으로 요청을 받는 서버에 GET 요청을 보내는 경우, 또는 읽기 전용 리소스에 PUT 요청을 보내는 경우)
+- 406 `Not Acceptable`.  : 요청한 페이지가 요청한 콘텐츠 특성상 응답 할 수 X. 
+  즉, 서버가 서버 주도 콘텐츠 협상을 수행한 이후, 사용자 에이전트에서 정해준 규격에 따른 어떠한 콘텐츠도 찾지 않았을 때 응답코드
+- 407 `Proxy Authentication Required`  : 401과 비슷하지만 요청자가 프록시를 사용하여 인증해야 함을 의미. 서버가 이 응답을 표시하면 요청자가 사용할 프록시를 가리키는 것이기도 함
+- 408 `Request Timeout`  : 서버의 요청 대기 시간 초과
+- 409 `Conflict`  : 서버가 요청을 수행하는 중 충돌 발생함을 의미
+- 410 `Gone` : 요청한 리소스가 영구적으로 삭제 되었음을 표시. 404 응답과 비슷하지만, 더 이상 존재하지 않음을 표시하기 위해 사용. 리소스가 영구적으로 이동된 경우는 301을 사용해야 함.
+- 411 `Length Required`  : 서버에서 필요로 하는 `Content-Lenghth` 헤드 필드가 정의되지 않은 요청이 들어왔기에, 서버가 요청 거절.
+- 412 `Precondition Failed`  : 클라이언트의 헤더에 있는 전제 조건은 서버의 전제조건에 적절하지 않음을 의미
 - 413 `Payooad Too Large` 
 - 414 `URI Too Long` 
 - 415 `Unsupported Media Type`  
