@@ -394,3 +394,7 @@ A2 : 쿠키를 사용하자
   - SameSite
     - XSRF 공격 방지
     - 요청 도메인과 쿠키에 설정된 도메인이 같은 경우에만 쿠키 전송
+
+## 참고 자료
+
+- https://velog.io/@dnstlr2933/HTTP-%ED%97%A4%EB%8D%94-%EC%9D%BC%EB%B0%98%ED%97%A4%EB%8D%94
