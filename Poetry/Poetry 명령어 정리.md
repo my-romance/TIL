@@ -131,8 +131,25 @@ Pyproject.toml에 의존성을 추가하고 싶다면, `add` 명령어 사용
 # 의존성 추가
 poetry add tqdm
 
-# 특정 버전을 지정하여 의존성 추가
+# 특정 버전을 지정가능
+poetry add django@^3.0.0
+poetry add "django=3.0.0"
 poetry add transformers==2.7.0
+
+# 최신버전을 설치
+poetry add django@latest
+
+# 깃 저장소에 있는 패키지 설치
+poetry add git+https://github.com/django/django.git
+
+# 깃 저장소의 패키지에서 브랜치를 지정 (HTTPS or SSH)
+poetry add git+https://github.com/django/django.git#stable/2.2.x
+poetry add git+ssh://git@example.com/path/to.git@branch
+
+# 로컬에 디렉토리의 파일로 설치하기
+poetry add ./my-package/
+poetry add ./my-package/dist/my-package-0.1.0.tar.gz
+poetry add ./my-package/dist/my-package-0.1.0.whl
 ```
 
 위 명령어 실행 뒤 pyproject.toml 파일 결과 중 [tool.poetry.dependencies]
@@ -236,3 +253,4 @@ Building <project-name> (0.1.0)
 - https://lhy.kr/python-poetry
 - https://python-poetry.org/docs/
 - https://spoqa.github.io/2019/08/09/brand-new-python-dependency-manager-poetry.html
+- https://blog.gyus.me/2020/introduce-poetry/
