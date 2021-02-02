@@ -78,6 +78,51 @@ build-backend = "poetry.masonry.api"
 
 
 
+### 기존 프로젝트 초기화 (init)
+
+이미 존재하는 프로젝트를 poetry로 관리하고자 하면 `init` 명령어를 통해 초기화
+
+```shell
+$ poetry init
+
+This command will guide you through creating your pyproject.toml config.
+
+Package name [my-project]:  my-project
+Version [0.1.0]:
+Description []:
+Author [rusty <rusty@spoqa.com>, n to skip]:
+License []:
+Compatible Python versions [^3.7]:
+
+Would you like to define your main dependencies interactively? (yes/no) [yes] no
+Would you like to define your dev dependencies (require-dev) interactively (yes/no) [yes] no
+Generated file
+
+[tool.poetry]
+name = "my-project"
+version = "0.1.0"
+description = ""
+authors = ["my-romance <my-romance@google.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
+
+Do you confirm generation? (yes/no) [yes]
+
+
+```
+
+
+
+
+
 ### 의존성 추가 (add)
 
 Pyproject.toml에 의존성을 추가하고 싶다면, `add` 명령어 사용
@@ -190,3 +235,4 @@ Building <project-name> (0.1.0)
 - https://blog.gyus.me/2020/introduce-poetry/
 - https://lhy.kr/python-poetry
 - https://python-poetry.org/docs/
+- https://spoqa.github.io/2019/08/09/brand-new-python-dependency-manager-poetry.html
