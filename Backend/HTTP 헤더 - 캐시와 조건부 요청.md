@@ -236,6 +236,120 @@
 
 
 
+## 캐시와 조건부 요청 헤더
+
+### Cache-Control
+
+**캐시 지시어 (directives)**
+
+- Cache-Control: \<max-age\>
+  - 캐시 유효 기간, 초단위
+  - 보통 길게 잡는다고 함
+- Cache-Control: `no-cache`
+  - 데이터는 캐시해도 되지만, **항상 데이터가 변경되었는지 검증하고 사용해야함**
+    - 원(origin) 서버에서 검증하고 사용 (중간 캐시 서버는 X)
+- Cache-Control: `no-store`
+  - 데이터에 민감한 정보가 있으므로 **저장하면 안됨**
+  - 메모리에서 사용하고 최대한 빨리 삭제해야 함
+
+### Pragma
+
+**캐시 제어(하위 호환)**
+
+- Pragma : no-cache
+- HTTP/1.0 하위 호환
+- Cache-Control에 있는 no-cache와 같은 것. 하위 호환을 위해 사용
+
+### Expires
+
+**캐시 만료일 지정(하위 호환)**
+
+- 캐시 만료일을 정확한 날짜로 지정
+
+- 예시
+
+  -  expires: Mon, 01 Jan 1990 00:00:00 GMT
+
+- HTTP/1.0부터 사용됨
+
+- 더 유연한 초단위의 Cache-Control: max-age="sec" 추천
+
+- Cache-Control: \<max-age\>를 함께쓰면 expires는 무시됨
+
+  
+
+## 프록시 캐시
+
+- 기존 방식
+  - 한국에서 미국에 있는 서버와 통신하면 느림
+
+![기존 방식](https://media.vlpt.us/images/dnstlr2933/post/a20939ff-67de-4f5c-88cc-0f44c7a7c29f/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-01-17%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%209.45.30.png)
+
+- 프록시 서버 사용
+
+  - 한국에 프록시 캐시 서버를 두고, 일단 서비스를 요청하면 프록시 캐시 서버에서 응답을 주고 데이터가 프록시 서버에 없다면 미국의 원 서버에서 데이터를 다운로드 함
+
+  - 프록시 서버에서 사용하는 캐시는 **public 캐시**. 다른 모든 사용자 이용 가능
+
+  - 웹 브라우저에서 사용하는 캐시는 **private 캐시**. 해당 클라이언트만 사용 가능
+
+    ![프록시 서버 사용](https://media.vlpt.us/images/dnstlr2933/post/1998f525-1bc7-4196-b968-ef46d550fffc/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-01-17%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%209.46.05.png)
+
+- 프록시 관련 Cache-Control
+  - Cache-Control: `public`
+    - 응답이 public 캐시에 저장되어도 됨
+  - Cache-Control: `private`
+    - 응답이 해당 사용자만을 위한 것으로, **private 캐시에 저장** 되야 한다(기본값)
+  - Cache-Control: \<s-maxage\>
+    - 프록시 캐시에만 적용되는 max-age이다
+  - Age: <시간> (HTTP 헤더)
+    - 원 서버에서 응답 후 프록시 캐시 서버내에 머무는 시간(초)
+
+
+
+## 캐시 무효화
+
+**확실한 캐시 무효화 응답**
+
+통장잔고 등 캐시에 보관해서는 안되는 데이터를 캐시에 보관하는 것을 막기 위해서는 아래 설정 모두 필요
+
+- Cache-Control: no-cache, no-store, must-revalidate
+- Pragma: no-cache
+  - (HTTP 1.0 하위 호환을 위해서)
+
+### **Cache-Control: no-cache**
+
+- 데이터는 캐시해도 되지만 항상 원(origin) 서버에 검증하고 사용 
+
+### Cache-Control: no-store
+
+- 데이터가 저장되지 않도록 함
+- 메모리에서 사용하고 최대한 빨리 삭제
+
+### Cache-Control: must-revalidate
+
+- 캐시 만료 후 최초 조회 시 원 서버에 검증해야 함
+- 원 서버에 접근 실패시 반드시 오류가 발생해야 함
+  - 원 서버에 접근 실패한다면, 프록시 서버에서 이전에 저장된 데이터를 반환할 수 있기에 (데이터를 보내지 않는 것보단 이전 데이터를 주는 것이 좋다고 판단하여)
+
+### **Pragma: no-cache**
+
+- HTTP/1.0 하위 버전인 경우 Cache-Control을 알지 못하므로 하위호환을 위해 사용
+
+### no-cache vs must-revalidate
+
+- no-cache
+
+  ![](https://media.vlpt.us/images/dnstlr2933/post/87fb5df5-4a8e-4c9b-b66a-fc3271df0457/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-01-17%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.07.56.png)
+
+  ![](https://media.vlpt.us/images/dnstlr2933/post/6e369c81-ba4c-4cc2-b8f9-988a5edb4e20/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-01-17%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.08.56.png)
+
+- Must-revalidate
+
+  ![](https://media.vlpt.us/images/dnstlr2933/post/7fa0e952-9771-4f40-a7d2-1db627f37218/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA%202021-01-17%20%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE%2010.11.26.png)
+
+  - 프록시-원서버 간의 통신장애가 발생한다면, 504(Gateway Timeout) 응답 메시지를 반환하도록 함
+
 ## 참고 자료
 
 - https://velog.io/@dnstlr2933/HTTP-%ED%97%A4%EB%8D%94%EC%BA%90%EC%8B%9C%EC%99%80-%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%9A%94%EC%B2%AD
