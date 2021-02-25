@@ -77,10 +77,31 @@ GitHub - settings - secrets에 `new repository secret` 을 통해 repository sec
 
 이때 name은 자신이 원하는 변수(예시:GSK)를 넣고 value에는 생성된 키파일 내용을 넣는다
 
+참고로 생성된 키파일 내용을 아래와 같이 생김
+
+```json
+{
+  "type": "service_account",
+  "project_id": "project-id",
+  "private_key_id": "key-id",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nprivate-key\n-----END PRIVATE KEY-----\n",
+  "client_email": "service-account-email",
+  "client_id": "client-id",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/service-account-email"
+}
+```
+
+
+
 
 
 
 
 ## 참고자료
 
-- https://cloud.google.com/container-registry/docs/advanced-authentication#json-key
+- [인증 방식 - JSON 키 파일](https://cloud.google.com/container-registry/docs/advanced-authentication#json-key)
+
+- [서비스 계정 키 생성 및 관리](https://cloud.google.com/iam/docs/creating-managing-service-account-keys?hl=ko)
