@@ -23,6 +23,7 @@ jobs:
     - name: Get current version
       id: version
       run: echo "::set-output name=version::$(sed -r -n '/version = \"([^\"]+)\"/{s//\1/; p}' ./pyproject.toml)"
+      
     - name: build & push docker image
       run: |
         echo $GCR_KEY_JSON | docker login -u _json_key --password-stdin asia.gcr.io
@@ -52,7 +53,7 @@ jobs:
 ### 3. 키 파일 생성
 
 ```sh
-gcloud iam service-accounts keys create ~/keyfile.json --iam-account [NAME]@[PROJECT_ID].iam.gserviceaccount.com
+gcloud iam service-accounts keys create ~/keyfile.json --iam-account [NAME]@[PROJECT_ID].iam.gserviceaccount.com 
 ```
 
 이때 `~/keyfile.json` 은 현재 폴더 내에 keyfile.json을 생성하겠다는 의미
