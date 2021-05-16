@@ -1,5 +1,7 @@
 # python을 이용한 정규표현식
 
+## 정규표현식 기본
+
 ### 정규 표현식 문법과 모듈 함수
 
 - 정규 표현식 문법
@@ -24,7 +26,7 @@
   | 문자 규칙 |                      설명                       |
   | :-------: | :---------------------------------------------: |
   |   \\\\    |            역 슬래쉬 문자 자체 의미             |
-  |    \d     |              모둔 숫자 의미. [0-9]              |
+  |    \d     |              모든 숫자 의미. [0-9]              |
   |    \D     |        숫자를 제외한 모든 문자. \[^0-9\]        |
   |    \s     |            공백 의미. [ \t\n\r\f\v]             |
   |    \S     |      공백을 제외한 문자. \[^ \t\n\r\f\v\]       |
@@ -439,7 +441,221 @@ abc 12 15 (12, 15)
 
 
 
+## 정규표현식 고급
+
+### 그룹핑
+
+- 보통 반복되는 문자열을 찾을 때 그룹을 사용함
+
+  ```python
+  >>> p = re.compile('(ABC)+')
+  >>> m = p.search('ABCABCABC OK?')
+  >>> print(m)
+  <re.Match object; span=(0, 9), match='ABCABCABC'>
+  >>> print(m.group())
+  ABCABCABC
+  ```
+
+- **하지만 매칭된 문자열 중에서 특정 부분의 문자열만 뽑아내기 위해서 사용가능**
+
+  ```python
+  >>> p = re.compile(r"(\w+)\s+\d+[-]\d+[-]\d+")
+  >>> m = p.search("park 010-1234-1234")
+  >>> print(m.group(1))
+  park
+  ```
+
+  - group 메서드의 인덱스는 n번째 그룹에 해당되는 문자열을 의미
+
+    - **group(0) : 매칭된 전체 문자열**
+    - group(1) : 첫번째 그룹에 해당되는 문자열
+    - group()2 : n번째 그룹에 해당되는 문자열
+
+  - 이때  `(\w+)\s+((\d+)[-]\d+[-]\d+)`처럼 그룹핑이 중첩되는 경우, index 순서는 `(` 가 나온 순서
+
+    ```python
+    >>> p = re.compile(r"(\w+)\s+((\d+)[-]\d+[-]\d+)")
+    >>> m = p.search("park 010-1234-1234")
+    >>> print(m.group(3))
+    010
+    ```
+
+- 그룹핑된 문자열 재참조
+
+  - 정규식  `(\b\w+)\s+\1`은 `(그룹) + " " + 그룹과 동일한 단어`와 매치됨을 의미. 
+
+    ```python
+    >>> p = re.compile(r'(\b\w+)\s+\1')
+    >>> p.search('Paris in the the spring').group()
+    'the the'
+    ```
+
+  - 즉 동일한 그룹을 여러번 사용할 때 유용
+
+  -  `\1`은 정규식의 그룹 중 첫 번째 그룹,  `\2`은 정규식의 그룹 중 두 번째 그룹,  `\n`은 정규식의 그룹 중 n 번째 그룹을 가리키는 메타 문자이다.
+
+- 그룹핑된 문자열에 이름 붙이기
+
+  - 그룹핑된 문자열에 이름을 붙여 특정 부분의 문자열만 뽑아낼 수 있음. 그룹핑 index의 혼란이 오는 경우 이름을 붙여 사용하면 유용하다. 또한 그룹 이름도 문자열 재참조가 가능
+
+    - 기존 `(<그룹 정규표현식>)` 을  `(?P<name><그룹 정규표현식>)` 형태로 사용하면 <그룹 정규표현식>에 해당하는 문자열에 \<name\> 이라는 이름을 부여함
+      - 예시 : `(\w+)` --> `(?P<name>\w+)` 
+
+  - 예시 1 : 그룹 이름으로 특정 부분의 문자열만 뽑아내기
+
+    ```python
+    >>> p = re.compile(r"(?P<name>\w+)\s+((\d+)[-]\d+[-]\d+)")
+    >>> m = p.search("park 010-1234-1234")
+    >>> print(m.group("name"))
+    park
+    ```
+
+  - 예시 2 : 그룹 이름으로 문자열 재참조하기
+
+    ```python
+    >>> p = re.compile(r'(?P<word>\b\w+)\s+(?P=word)')
+    >>> p.search('Paris in the the spring').group()
+    'the the'
+    ```
+
+
+
+### 전방 탐색
+
+- 전방 탐색 종류
+
+  - 긍정형 전방 탐색(`(?=...)`) :  `...` 에 해당되는 정규식과 매치되어야 하며, 조건이 통과되어도 문자열이 소비되지 않음
+  - 부정형 전방 탐색(`(?!...)`) : `...`에 해당되는 정규식과 매치되지 않아야 하며, 조건이 통과되어도 문자열이 소비되지 않는다. → 매칭되지 않아야 하므로, `...`에 해당되는 문자열이 소비되지 않는 것이 당연한 것..
+
+- 긍정형 전방 탐색
+
+  - 아래 코드는 정규식 중 `:`에 해당하는 부분에 긍정형 전방 탐색 기법을 적용하여 `(?=:)`으로 변경한 코드 → 기존 정규식과 같이 검색에서는 동일한 효과를 발휘하지만 `:`에 해당하는 문자열이 정규식 엔진에 의해 소비되지 않아 검색 결과에서는 `:` 이 제거된 문자열을 반환함
+
+    ```python
+    >>> p = re.compile(".+(?=:)")
+    >>> m = p.search("http://google.com")
+    >>> print(m)
+    <re.Match object; span=(0, 4), match='http'>
+    
+    >>> m = p.search("http//google.com")
+    None
+    ```
+
+- 부정형 전방 탐색
+
+  - 아래 코드는 정규식 `.*[.].*$` 에 부정형 전방 탐색 기법을 적용하여 "bat인 파일은 제외해야 한다"는 조건을 추가한 정규표현식. 즉, 부정형 전방 탐색은 정규식에 매칭되지 말야야 하는 탐색을 할때 유리. 
+
+    ```python
+    >>> p = re.compile('.*[.](?!bat$).*$')
+    >>> print(p.search('autoexec.bat'))
+    None
+    
+    >>> print(p.search('autoexec.bar'))
+    <re.Match object; span=(0, 12), match='autoexec.bar'>
+    
+    >>> p = re.compile('.*[.].+$(?!bat$)') #하지만 '(?!bat$)' 순서를 뒤로 빼면 bat가 매칭됨을 유의. (순서 유의해서 사용)
+    >>> print(p.search('autoexec.bat'))
+    <re.Match object; span=(0, 12), match='autoexec.bat'>
+    
+    >>> p = re.compile('.*[.](?!bat).*$')
+    print(p.search('autoexec.bat'))
+    None
+    
+    >>> p = re.compile('.*[.](?!bat$).*')
+    >>> print(p.search('autoexec.bat'))
+    None
+    >>> print(p.search('autoexec.bar'))
+    <re.Match object; span=(0, 12), match='autoexec.bar'>
+    ```
+
+  - "bat"뿐만이 아니라 "exe" 확장자명을 가지는 파일을 추출하지 않을때는 아래 코드와 같이 표현 가능
+
+    ```python
+    >>> p = re.compile('.*[.](?!bat$|exe$).*$')
+    >>> print(p.search('autoexec.exe'))
+    None
+    ```
+
+    
+
+### re.sub()
+
+- sub 메서드를 사용하면 정규식과 매치되는 부분을 다른 문자로 쉽게 바꿀 수 있음
+
+  ```python
+  >>> p = re.compile('(blue|white|red)')
+  >>> p.sub('colour', 'blue socks and red shoes')
+  'colour socks and colour shoes
+  
+  >>> p.sub('colour', 'blue socks and red shoes', count=1) # 또한 `count` 파라미터를 통해 바꿀 횟수 제한가능
+  'colour socks and red shoes'
+  
+  >>> p.subn( 'colour', 'blue socks and red shoes') # subn 메서드는 바꿔진 횟수 또한 반환
+  ('colour socks and colour shoes', 2)
+  ```
+
+- sub 메서드 사용 시 참조 구문 사용하기
+
+  - 아래 코드는 참조 구문을 활용하여 `이름 + 전화번호` 문자열을 `전화번호 + 이름` 으로 바꾸는 코드. sub의 바꿀 문자열 부분에 `\g<그룹이름>` 을 사용하면 정규식의 그룹이름을 참조할 수 있음
+
+    ```python
+    >>> p = re.compile(r"(?P<name>\w+)\s+(?P<phone>(\d+)[-]\d+[-]\d+)")
+    >>> print(p.sub("\g<phone> \g<name>", "park 010-1234-1234"))
+    010-1234-1234 park
+    ```
+
+  - 그룹 이름대신 참조번호를 통해 참조 구문사용 가능
+
+    ```python
+    >>> p = re.compile(r"(?P<name>\w+)\s+(?P<phone>(\d+)[-]\d+[-]\d+)")
+    >>> print(p.sub("\g<2> \g<1>", "park 010-1234-1234"))
+    010-1234-1234 park
+    ```
+
+- sub 메서드의 매개변수로 함수 넣기
+
+  - sub 메서드의 `repl` 에 해당하는 매개변수로 함수를 넣을 수 있음
+
+    ```python
+    >>> def hexrepl(match): # match객체의 group()을 16진수로 반환하는 함수
+    ...     value = int(match.group())
+    ...     return hex(value)
+    ...
+    >>> p = re.compile(r'\d+')
+    >>> p.sub(hexrepl, 'Call 65490 for printing, 49152 for user code.')
+    'Call 0xffd2 for printing, 0xc000 for user code.'
+    ```
+
+  - sub의  `repl` 에 해당하는 매개변수로 함수를 사용할 경우, 해당 함수의 첫 번째 매개변수에는 정규식과 매치된 match 객체가 입력된다. 그리고 매치되는 문자열은 함수의 반환 값으로 바뀌게 된다.
+
+
+
+### Greedy VS Non-Greedy
+
+- 정규표현식을 최대한의 문자열을 매칭 (Greedy) 하는데, 이를 제한하기 위해 non-greedy문자인 `?` 을 사용
+
+  - Greedy 예제
+
+    ```
+    >>> s = '<html><head><title>Title</title>'
+    >>> print(re.match('<.*>', s).group())
+    <html><head><title>Title</title>
+    ```
+
+  - Non-Greedy 예제
+
+    ```
+    >>> s = '<html><head><title>Title</title>'
+    >>> print(re.match('<.*?>', s).group())
+    <html>
+    ```
+
+- non-greedy 문자인 `?`는 `*?`, `+?`, `??`, `{m,n}?`와 같이 사용할 가능 → 가능한 한 가장 최소한의 반복을 수행하도록 도와주는 역할
+
+
+
 ### 참고
 
 - https://wikidocs.net/21703
 - https://wikidocs.net/4308
+- https://wikidocs.net/4309
