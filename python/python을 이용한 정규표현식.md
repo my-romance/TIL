@@ -558,24 +558,28 @@ abc 12 15 (12, 15)
     <re.Match object; span=(0, 12), match='autoexec.bat'>
     
     >>> p = re.compile('.*[.](?!bat).*$')
-    print(p.search('autoexec.bat'))
+    >>> print(p.search('autoexec.bat'))
     None
     
     >>> p = re.compile('.*[.](?!bat$).*')
     >>> print(p.search('autoexec.bat'))
     None
+    
+    >>> print(p.search('autoexec.bataaa'))
+    <re.Match object; span=(0, 15), match='autoexec.bataaa'>
+  
     >>> print(p.search('autoexec.bar'))
-    <re.Match object; span=(0, 12), match='autoexec.bar'>
+  <re.Match object; span=(0, 12), match='autoexec.bar'>
     ```
-
+  
   - "bat"뿐만이 아니라 "exe" 확장자명을 가지는 파일을 추출하지 않을때는 아래 코드와 같이 표현 가능
-
+  
     ```python
-    >>> p = re.compile('.*[.](?!bat$|exe$).*$')
+  >>> p = re.compile('.*[.](?!bat$|exe$).*$')
     >>> print(p.search('autoexec.exe'))
     None
     ```
-
+  
     
 
 ### re.sub()
