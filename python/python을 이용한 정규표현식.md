@@ -526,6 +526,7 @@ abc 12 15 (12, 15)
 
   - 긍정형 전방 탐색(`(?=...)`) :  `...` 에 해당되는 정규식과 매치되어야 하며, 조건이 통과되어도 문자열이 소비되지 않음
   - 부정형 전방 탐색(`(?!...)`) : `...`에 해당되는 정규식과 매치되지 않아야 하며, 조건이 통과되어도 문자열이 소비되지 않는다. → 매칭되지 않아야 하므로, `...`에 해당되는 문자열이 소비되지 않는 것이 당연한 것..
+  - 즉, 매칭된 문자열의 앞을 의미함.
 
 - 긍정형 전방 탐색
 
@@ -567,19 +568,66 @@ abc 12 15 (12, 15)
     
     >>> print(p.search('autoexec.bataaa'))
     <re.Match object; span=(0, 15), match='autoexec.bataaa'>
-  
+
     >>> print(p.search('autoexec.bar'))
   <re.Match object; span=(0, 12), match='autoexec.bar'>
     ```
-  
+
   - "bat"뿐만이 아니라 "exe" 확장자명을 가지는 파일을 추출하지 않을때는 아래 코드와 같이 표현 가능
-  
+
     ```python
-  >>> p = re.compile('.*[.](?!bat$|exe$).*$')
-    >>> print(p.search('autoexec.exe'))
+    p = re.compile('.*[.](?!bat$|exe$).*$')
+    print(p.search('autoexec.exe'))
+    None
+
+  - **다른 예시**
+
+    ```python
+    p = re.compile('^((?!Dae).)*$')
+    print(p.search('seokDeajin'))
+    None
+    
+    ### 참고로 아래와 같이 (?:를 붙혀주면 참조 가능한 상태로 유지하는 것을 없애기에 메모리 효율성을 얻을 수 있다고 함
+    p = re.compile('^(?:(?!Dae).)*$')
+    print(p.search('seokDeajin'))
     None
     ```
-  
+
+    
+
+### 후방탐색
+
+- 후방 탐색 종류
+  - 긍정형 후방 탐색(`(?<=...)`) :  `...` 에 해당되는 정규식과 매치되어야 하며, 조건이 통과되어도 문자열이 소비되지 않음
+  - 부정형 전방 탐색(`(?<!...)`) : `...`에 해당되는 정규식과 매치되지 않아야 하며, 조건이 통과되어도 문자열이 소비되지 않는다.
+  - 즉, 매칭된 문자열의 뒤를 의미함.
+
+- 전방 탐색 VS 후방 탐색 비교
+
+  - 전방탐색
+
+    ```python
+    p = re.compile('.(?=Dae)')
+    p.search('seokDaejin')
+    >>> <re.Match object; span=(3, 4), match='k'>
+    
+    p = re.compile('(?=Dae).')
+    p.search('seokDaejin')
+    >>> <re.Match object; span=(4, 5), match='D'>
+    ```
+
+  - 후방탐색
+
+    ```python
+    p = re.compile('.(?<=Dae)')
+    p.search('seokDaejin')
+    >>> <re.Match object; span=(6, 7), match='e'>
+    
+    p = re.compile('(?<=Dae).')
+    p.search('seokDaejin')
+    >>> <re.Match object; span=(7, 8), match='j'>
+    ```
+
     
 
 ### re.sub()
@@ -663,3 +711,4 @@ abc 12 15 (12, 15)
 - https://wikidocs.net/21703
 - https://wikidocs.net/4308
 - https://wikidocs.net/4309
+- https://brunch.co.kr/@daejin/11
