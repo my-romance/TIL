@@ -127,7 +127,7 @@ Do you confirm generation? (yes/no) [yes]
 
 Pyproject.toml에 의존성을 추가하고 싶다면, `add` 명령어 사용
 
-```
+```shell
 # 의존성 추가
 poetry add tqdm
 
@@ -143,8 +143,8 @@ poetry add django@latest
 poetry add git+https://github.com/django/django.git
 
 # 깃 저장소의 패키지에서 브랜치를 지정 (HTTPS or SSH)
-poetry add git+https://github.com/django/django.git#stable/2.2.x
-poetry add git+ssh://git@example.com/path/to.git@branch
+poetry add git+https://github.com/django/django.git#${TAG_NAME}
+poetry add git+ssh://git@example.com/path/to.git@${BRAND_NAME}
 
 # 로컬에 디렉토리의 파일로 설치하기
 poetry add ./my-package/
