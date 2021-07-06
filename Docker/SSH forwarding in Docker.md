@@ -27,7 +27,7 @@ docker build --ssh default .
 
 ## git actions에서의 SSH forwarding in Docker
 
-.github/workflows 폴더에 존재하는 ci/cd yaml 파일에 아래 코드를 docker build하기 전에 수행하여, github actions에서 사용하는 머신에게 ssh key 권한을 부여한다.
+.github/workflows 폴더에 존재하는 ci/cd yaml 파일에 아래 코드를 docker build하기 전에 수행하여, github actions에서 사용하는 머신에게 해당 repo에 권한이 있는 ssh key를 부여한다.
 
 ```yaml
 - name: set ssh key
@@ -42,9 +42,19 @@ ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
 
   - private repo에 권한을 주기 위해서는 git repo의 deploy keys를 통해 권한을 주는 방법(정확하지는 않음)과 계정에 ssh key를 등록하여 권한을 부여하는 방법이 있다.
 
+- 만약 저 위 코드를 통해 github actions에서 사용하는 머신에 ssh key를 부여하지 않는다면 아래와 같은 에러문 발생
+
+  ```shell
+  Could not parse ssh: [default]: invalid empty ssh-agent socket, make sure SSH_AUTH_SOCK is set
+  ```
+
+  > 이 오류는 SSH 승인과 관련된 문제를 나타냅니다. 일반적인 예시로는 Cloud Build로 비공개 GitHub 저장소에 액세스할 때 발생하는 SSH 승인 오류입니다. GitHub용 SSH를 설정하는 방법은 [비공개 GitHub 저장소 액세스](https://cloud.google.com/build/docs/access-private-github-repos?hl=ko)를 참조하세요.
+  >
+  > [해당 인용구 링크](https://cloud.google.com/build/docs/troubleshooting?hl=ko#builds_fail_due_to_invalid_ssh_authorization)
+
   
 
 ## 참고자료
 
 - https://medium.com/@tonistiigi/build-secrets-and-ssh-forwarding-in-docker-18-09-ae8161d066
-
+- https://cloud.google.com/build/docs/troubleshooting?hl=ko
