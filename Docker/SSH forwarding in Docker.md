@@ -4,7 +4,7 @@
 
 ## SSH forwarding in Docker
 
-host에서 docker로 ssh forwarding을 하기위해서는 dockerfile에 아래와 같은 코드를 추가한 후, 그 다음 command를 입력하면 ssh forwarding이 된다.
+host에서 docker로 ssh forwarding을 하기위해서는 dockerfile에 아래와 같이 코드를 추가한 후, 그 다음 도커 빌드시 아래 커맨드처럼 --ssh default 을 추가하면 ssh forwarding이 적용됨
 
 ```dockerfile
 # download public key for github.com
@@ -31,12 +31,12 @@ docker build --ssh default .
 
 ```yaml
 - name: set ssh key
-uses: webfactory/ssh-agent@v0.4.1
-with:
-ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
+	uses: webfactory/ssh-agent@v0.4.1
+	with:
+		ssh-private-key: ${{ secrets.PRIVATE_SSH_KEY }}
 ```
 
-- 참고로 secrets.PRIVATE_SSH_KEY은 secret key를 의미함
+- 참고로 secrets.PRIVATE_SSH_KEY은 git repo의 secret key를 의미함
 
 - secrets.PRIVATE_SSH_KEY은 해당 private repo에 권한이 있는 ssh key여야 한다.
 
