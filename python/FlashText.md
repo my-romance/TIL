@@ -10,6 +10,7 @@
 - 따라서 FlashText를 Query 키워드 갯수가 500개 이상일 때 사용하면, 속도측면에서 정규표현식보다 효율적
   ![](https://miro.medium.com/max/1400/1*uun3MrHjf1iwe-kbYFOMXA.png)
 - 하지만, 정규표현식처럼 특수문자를 검색할 수 없음
+- 자세한 알고리즘은 [이 논문](https://arxiv.org/pdf/1711.00046.pdf) 참조
 
 
 
