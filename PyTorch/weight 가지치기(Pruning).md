@@ -1,3 +1,19 @@
+## Pruning
+
+모델의 weights를 제거하여, 모델 크기를 줄이고 속도를 향상시키는 방법.
+
+
+
+### ModelPruning
+
+PyTorch에서는 [torch pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)을 이용하는 [ModelPruning](https://pytorch-lightning.readthedocs.io/en/latest/extensions/generated/pytorch_lightning.callbacks.ModelPruning.html#pytorch_lightning.callbacks.ModelPruning) callback을 통해 pruning 가능
+
+PyTorch's ModelPruning은  [torch pruning](https://pytorch.org/tutorials/intermediate/pruning_tutorial.html)를 좀 더 쉽게 사용할 수 있도록 하고, `use_lottery_ticket_hypothesis` 등 다른 기능을 추가한 것. 
+
+
+
+### 실습
+
 ```python
 import torch
 from torch import nn
@@ -89,8 +105,10 @@ tensor([[[[ 0.2834,  0.1274, -0.0136],
 ('bias', Parameter containing:
 tensor([-0.2801, -0.2972,  0.2503,  0.0273, -0.1331,  0.0912],
        requires_grad=True))
+
 #  list(module.named_buffers()) -> 아직 빈 list
 []
+
 # module.weight
 tensor([[[[ 0.2834,  0.1274, -0.0136],
           [ 0.1645, -0.2873, -0.3107],
