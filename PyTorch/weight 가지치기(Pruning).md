@@ -1,3 +1,5 @@
+[TOC]
+
 ## Pruning
 
 모델의 weights를 제거하여, 모델 크기를 줄이고 속도를 향상시키는 방법.
@@ -13,6 +15,8 @@ PyTorch's ModelPruning은  [torch pruning](https://pytorch.org/tutorials/interme
 
 
 ### 실습
+
+#### Create a model
 
 ```python
 import torch
@@ -64,11 +68,11 @@ class LeNet(nn.Module):
 model = LeNet().to(device=device)
 
 module = model.conv1
+
 # named_parameters()는 (name, parameter) 조합의 tuple iterator를 반환
 show_pretty(list(module.named_parameters()))
 print(list(module.named_buffers()))
 print(module.weight)
-
 ```
 
 ```python
@@ -140,6 +144,10 @@ tensor([[[[ 0.2834,  0.1274, -0.0136],
           [-0.1652,  0.1792,  0.0377]]]], requires_grad=True)
 ```
 
+
+
+#### Pruning a Module
+
 ```python
 '''
 torch.nn.utils.prune 내 존재하는 가지치기 기술 적용
@@ -147,6 +155,7 @@ torch.nn.utils.prune 내 존재하는 가지치기 기술 적용
 prune.random_unstructured(module, name="weight", amount=0.3)
 prune.l1_unstructured(module, name="bias", amount=3)
 # pruning을 적용하면, 기존 가중치값들을 제거하고 weight_orig (즉, 초기 가중치 이름에 “_orig”을 붙인) 이라는 새로운 파라미터값으로 대체됨. 아래와 같이 weight 파라미터 이름이 weight_orig으로 바뀜
+
 show_pretty(list(module.named_parameters()))
 print(list(module.named_buffers()))
 print(module.weight)
@@ -259,7 +268,7 @@ tensor([-0.2951,  0.0000, -0.0000, -0.0000,  0.2521, -0.2541],
 OrderedDict([(0, <torch.nn.utils.prune.RandomUnstructured object at 0x7fec073ff510>), (1, <torch.nn.utils.prune.L1Unstructured object at 0x7fec073ff610>)])
 ```
 
-
+##### Iterative Pruning
 
 ```python
 '''
@@ -267,8 +276,10 @@ OrderedDict([(0, <torch.nn.utils.prune.RandomUnstructured object at 0x7fec073ff5
 '''
 prune.ln_structured(module, name="weight", amount=0.5, n=2, dim=0)
 print(module.weight)
+
 # 여러 Pruning이 결합된 경우의 hook은 torch.nn.utils.prune.PruningContainer 타입이 된다.
 print(module._forward_pre_hooks)
+
 # 또한 아래처럼 가중치에 적용된 이전 Pruning 이력을 저장하기에, 이를 확인할 수 있다.
 for hook in module._forward_pre_hooks.values():
     if hook._tensor_name == "weight":  # select out the correct hook
@@ -314,6 +325,232 @@ OrderedDict([(1, <torch.nn.utils.prune.L1Unstructured object at 0x7f8d7cfff650>)
 # list(hook) -> weight에 적용되었던 pruning 이력을 확인할 수 있음
 [<torch.nn.utils.prune.RandomUnstructured object at 0x7f8d7cfff550>, <torch.nn.utils.prune.LnStructured object at 0x7f8d7cfff7d0>]
 ```
+
+
+
+#### Serializing a pruned model
+
+관련 tensors들이 `model.state_dict()` 에 저장된다. 따라서 쉽게 serializing과 saving 가능
+
+```python
+print(model.state_dict().keys())
+```
+
+```python
+odict_keys(['conv1.weight_orig', 'conv1.bias_orig', 'conv1.weight_mask', 'conv1.bias_mask', 'conv2.weight', 'conv2.bias', 'fc1.weight', 'fc1.bias', 'fc2.weight', 'fc2.bias', 'fc3.weight', 'fc3.bias'])
+```
+
+
+
+#### Remove pruning re-parametrization
+
+가지치기 적용한 것을 영구적으로 사용하기 위해, pruning re-parametrization을 지운다.  즉, `weight_orig` , `weight_mask` , `weight_mask` 을 지움. `torch.nn.utils.prune` 의 `remove()`를 통해 지운다.  이때 지운다는 것은 pruning 자체를 지우는 것이 아니고, 가지치기 적용한 것을 영구적으로 사용하기 위해 `weight` 파라미터에 가지치기 적용한 weight를 할당.
+
+```python
+prune.remove(module, 'weight')
+prune.remove(module, 'bias')
+
+print(list(module.named_parameters()))
+print(list(module.named_buffers()))
+```
+
+```python
+# list(module.named_parameters()) -> weight_orig, bias_orig는 없어지고 weight, bias가 생김.
+[('weight', Parameter containing:
+tensor([[[[-0.0000, -0.0000,  0.0000],
+          [ 0.0000,  0.0000, -0.0000],
+          [ 0.0000,  0.0000, -0.0000]]],
+        [[[ 0.0176,  0.0545,  0.2269],
+          [-0.3239,  0.1709,  0.1655],
+          [-0.0000, -0.1586, -0.1224]]],
+        [[[-0.0000,  0.0000,  0.0000],
+          [ 0.0000, -0.0000,  0.0000],
+          [ 0.0000,  0.0000,  0.0000]]],
+        [[[ 0.0000,  0.0000,  0.0000],
+          [ 0.0000,  0.0000, -0.0000],
+          [ 0.0000, -0.0000, -0.0000]]],
+        [[[ 0.0000,  0.1914,  0.1612],
+          [-0.3100,  0.2387,  0.1487],
+          [ 0.1479,  0.0000, -0.0000]]],
+        [[[-0.0000,  0.0000,  0.2084],
+          [ 0.0000,  0.3079,  0.1919],
+          [-0.3262, -0.1481,  0.0000]]]], requires_grad=True)), ('bias', Parameter containing:
+tensor([ 0.0000,  0.3329,  0.0000,  0.0000, -0.0681,  0.3009],
+       requires_grad=True))]
+
+# list(module.named_buffers()) -> 제거된 것을 확인할 수 있음
+[]
+```
+
+
+
+#### pruning multiparameter in a model
+
+한 네트워크 안에 있는 multiple tensors를 쉽게 pruning 가능
+
+```python
+new_model = LeNet()
+for name, module in new_model.named_modules():
+    # prune 20% of connections in all 2D-conv layers
+    if isinstance(module, torch.nn.Conv2d):
+        prune.l1_unstructured(module, name='weight', amount=0.2)
+    # prune 40% of connections in all linear layers
+    elif isinstance(module, torch.nn.Linear):
+        prune.l1_unstructured(module, name='weight', amount=0.4)
+
+print(dict(new_model.named_buffers()).keys())  # to verify that all masks exist
+```
+
+```python
+dict_keys(['conv1.weight_mask', 'conv2.weight_mask', 'fc1.weight_mask', 'fc2.weight_mask', 'fc3.weight_mask'])
+```
+
+
+
+#### Global Pruning
+
+모델을 한번에 pruning 할 수 있음. 한 layer마다 pruning을 적용했던 앞에 방법(local Pruning)과 달리 Global Pruning은 모델 단위로 pruning 을 적용하기에 좀더 강력하다고 할 수 있다. 
+
+```python
+model = LeNet()
+
+parameters_to_prune = (
+    (model.conv1, 'weight'),
+    (model.conv2, 'weight'),
+    (model.fc1, 'weight'),
+    (model.fc2, 'weight'),
+    (model.fc3, 'weight'),
+)
+
+prune.global_unstructured(
+    parameters_to_prune,
+    pruning_method=prune.L1Unstructured,
+    amount=0.2,
+)
+```
+
+
+
+
+```python
+print(
+    "Sparsity in conv1.weight: {:.2f}%".format(
+        100. * float(torch.sum(model.conv1.weight == 0))
+        / float(model.conv1.weight.nelement())
+    )
+)
+print(
+    "Sparsity in conv2.weight: {:.2f}%".format(
+        100. * float(torch.sum(model.conv2.weight == 0))
+        / float(model.conv2.weight.nelement())
+    )
+)
+print(
+    "Sparsity in fc1.weight: {:.2f}%".format(
+        100. * float(torch.sum(model.fc1.weight == 0))
+        / float(model.fc1.weight.nelement())
+    )
+)
+print(
+    "Sparsity in fc2.weight: {:.2f}%".format(
+        100. * float(torch.sum(model.fc2.weight == 0))
+        / float(model.fc2.weight.nelement())
+    )
+)
+print(
+    "Sparsity in fc3.weight: {:.2f}%".format(
+        100. * float(torch.sum(model.fc3.weight == 0))
+        / float(model.fc3.weight.nelement())
+    )
+)
+print(
+    "Global sparsity: {:.2f}%".format(
+        100. * float(
+            torch.sum(model.conv1.weight == 0)
+            + torch.sum(model.conv2.weight == 0)
+            + torch.sum(model.fc1.weight == 0)
+            + torch.sum(model.fc2.weight == 0)
+            + torch.sum(model.fc3.weight == 0)
+        )
+        / float(
+            model.conv1.weight.nelement()
+            + model.conv2.weight.nelement()
+            + model.fc1.weight.nelement()
+            + model.fc2.weight.nelement()
+            + model.fc3.weight.nelement()
+        )
+    )
+)
+```
+
+```python
+Sparsity in conv1.weight: 5.56%
+Sparsity in conv2.weight: 7.64%
+Sparsity in fc1.weight: 22.15%
+Sparsity in fc2.weight: 11.79%
+Sparsity in fc3.weight: 9.64%
+Global sparsity: 20.00%
+```
+
+
+
+#### Extending `torch.nn.utils.prune` with custom pruning functions
+
+`prune.BasePruningMethod` 을 상속받아 custom pruning functions을 만들 수 있음
+
+```python
+class FooBarPruningMethod(prune.BasePruningMethod):
+    """Prune every other entry in a tensor
+    """
+    PRUNING_TYPE = 'unstructured'
+
+    def compute_mask(self, t, default_mask):
+        mask = default_mask.clone()
+        mask.view(-1)[::2] = 0
+        return mask
+```
+
+```python
+def foobar_unstructured(module, name):
+    """Prunes tensor corresponding to parameter called `name` in `module`
+    by removing every other entry in the tensors.
+    Modifies module in place (and also return the modified module)
+    by:
+    1) adding a named buffer called `name+'_mask'` corresponding to the
+    binary mask applied to the parameter `name` by the pruning method.
+    The parameter `name` is replaced by its pruned version, while the
+    original (unpruned) parameter is stored in a new parameter named
+    `name+'_orig'`.
+
+    Args:
+        module (nn.Module): module containing the tensor to prune
+        name (string): parameter name within `module` on which pruning
+                will act.
+
+    Returns:
+        module (nn.Module): modified (i.e. pruned) version of the input
+            module
+
+    Examples:
+        >>> m = nn.Linear(3, 4)
+        >>> foobar_unstructured(m, name='bias')
+    """
+    FooBarPruningMethod.apply(module, name)
+    return module
+```
+
+```python
+model = LeNet()
+foobar_unstructured(model.fc3, name='bias')
+
+print(model.fc3.bias_mask)
+```
+
+```python
+tensor([0., 1., 0., 1., 0., 1., 0., 1., 0., 1.])
+```
+
+
 
 
 
