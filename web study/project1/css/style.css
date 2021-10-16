@@ -1,0 +1,326 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    color: rgb(37, 32, 46);
+    font-family: "Poor Story", sans-serif, cursive;
+}
+
+a {
+    all: unset;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+    color: LightBlue;
+}
+
+.inner {
+    width: 100%; /* 가로 사이즈가 1200px 넘는 해상도에서는 max-width 설정 */
+    height: 100%; /* 100%로 설정해주어 부모의 100% height를 설정해준다. ->
+                    align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
+    margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
+    padding: 0 0.8rem; /* 좌우로 너무 딱 달라 붙지 않도록 */
+}
+
+header {
+    width: 100%;
+    height: 70px;
+    line-height: 70px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    top: 0;
+    left: 0;
+    position: fixed;
+    z-index: 99;
+    background-color: white;
+}
+
+.header-container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    justify-items: center;
+}
+
+.header-core-sites {
+    display: flex;
+    justify-content: space-around;
+}
+.site {
+    margin: 0 0.5rem;
+    cursor: pointer;
+}
+
+.section {
+    width: 100%;
+    position: relative;
+}
+
+.main {
+    margin-top: 70px;
+    height: 360px;
+    background-image: url(../img/shining_starts.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: 1;
+}
+
+.main-container {
+    width: 100%;
+    height: 100%;
+    height: 360px;
+    background-color: rgba(47, 48, 89, 0.5);
+
+    z-index: 2;
+    color: white;
+}
+
+.title-container {
+    padding-top: 2rem;
+}
+
+.title {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    font-size: 2rem;
+    font: white;
+}
+
+.message {
+    font-weight: normal;
+    font-size: 1.2rem;
+    color: floralwhite;
+}
+
+.skill-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
+    align-content: center;
+    margin-top: 1rem;
+}
+.skill {
+    width: 25%; /* margin으로 인해 차지할 수 있는 공간이 작아진다고 해도, 
+                    결국 margin을 제외한 공간을 1/4로 나누기때문에 margin을 추가하더라도 똑같이 1/4로 공간을 할당받는 것이다. */
+    display: flex;
+    align-items: center;
+    border-radius: 9px;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    box-shadow: 10px 10px 10px -5px rgba(25, 42, 70, 0.2);
+    transition: transform 0.4s;
+}
+
+.skill:hover {
+    transform: translate(0, -5px);
+    box-shadow: 10px 10px 10px 0px rgba(25, 42, 70, 0.2);
+}
+
+.skill-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.skill-name {
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.skill-usage {
+    font-size: 0.9rem;
+    color: rgb(55, 53, 58);
+}
+
+.skill-icon {
+    font-size: 2.5rem;
+    margin-right: 0.5rem;
+}
+
+.vue-style {
+    color: #2e7d32;
+}
+
+.react-style {
+    color: skyblue;
+}
+
+.node-style {
+    color: yellowgreen;
+}
+
+.angular-style {
+    color: rgb(160, 39, 39);
+}
+
+.roadmap-container {
+    width: 100%;
+    margin: 2rem 2rem;
+}
+
+.roadmap-title-contaienr {
+    display: flex;
+    justify-content: space-between;
+}
+
+.roadmap-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #545e6f;
+}
+.arrow-container {
+    display: flex;
+}
+
+.slide-prev {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #cfd8dc;
+}
+
+.slide-next {
+    font-size: 2rem;
+    cursor: pointer;
+    color: rgb(47, 48, 89);
+}
+
+.class-list {
+    display: flex;
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.class-card {
+    width: 240px;
+    box-shadow: 10px 10px 10px -5px rgba(25, 42, 70, 0.2);
+    border-radius: 8px;
+    margin: 10px;
+    transition: transform 0.4s;
+}
+
+.class-card:hover {
+    transform: translate(0, -5px);
+    box-shadow: 10px 10px 10px 0px rgba(25, 42, 70, 0.2);
+}
+
+.class-image {
+    width: 240px;
+    height: 150px;
+    border-radius: 8px 8px 0 0;
+}
+
+.class-container {
+    width: 100%;
+    padding: 0.5rem 1rem 1rem 1rem;
+}
+
+.class-skill {
+    display: flex;
+    justify-content: space-between;
+}
+
+.class-type {
+    color: grey;
+    font-size: 1rem;
+}
+
+.class-format {
+    background-color: darkslateblue;
+    padding: 0.2rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.class-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.class-detail {
+    font-size: 0.8rem;
+}
+
+li a:hover {
+    cursor: pointer;
+}
+
+footer {
+    border-top: 1px solid #e4e4e4;
+    background-color: #f8f9fa;
+    padding: 2rem 0;
+}
+
+.footer-contact {
+    color: #545e6f;
+    margin: 0 0.5rem;
+}
+
+#backtotop {
+    background-color: rgb(47, 48, 89);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+
+    border-radius: 20px;
+    transition-property: background-color, opacity, visibility;
+    transition-duration: 0.3s, 0.5s, 0.5s;
+    bottom: 30px;
+    right: 30px;
+    position: fixed;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 99;
+}
+
+#backtotop::after {
+    content: "\f077";
+    font-family: FontAwesome;
+    font-size: 1.5rem;
+    line-height: 40px;
+    color: white;
+}
+
+#backtotop.show {
+    opacity: 1;
+    visibility: visible;
+    background-color: rgb(47, 48, 49);
+}
+
+#backtotop.show:hover {
+    cursor: pointer;
+    background-color: #2186c4;
+}
+
+@media only screen and (min-width: 1200px) {
+    .inner {
+        max-width: 1200px;
+    }
+}
+
+@media only screen and (max-width: 1200px) {
+    .skill-container {
+        display: none;
+    }
+}
