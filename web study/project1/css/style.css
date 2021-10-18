@@ -35,6 +35,7 @@ a:hover {
                     align-items 등으로 수직 가운데 정렬을 위해, 알맞은 height 설정이 필요함 */
     margin: 0 auto; /* 가운데 정렬: 동일 요소에 width 가 설정되어 있을 때에만 적용 */
     padding: 0 0.8rem; /* 좌우로 너무 딱 달라 붙지 않도록 */
+    overflow: hidden;
 }
 
 header {
@@ -116,7 +117,7 @@ header {
     height: 100%;
     justify-content: space-around;
     align-content: center;
-    margin-top: 1rem;
+    margin: 1rem 0;
 }
 .skill {
     width: 25%; /* margin으로 인해 차지할 수 있는 공간이 작아진다고 해도, 
@@ -174,12 +175,16 @@ header {
 
 .roadmap-container {
     width: 100%;
-    margin: 2rem 2rem;
+    margin-top: 2rem; /* margin: 2rem 2rem 으로 설정하니, main-conatiner과 width 기준이 맞지 않음*/
+    overflow: hidden; /* .inner에서는 padding이 존재하기에, class-list이 내용을 1200px width에 정확히 잘라내지 못함 -> 
+                        padding이 존재하지 않는 다음 자식 요소의 overflow를 hidden으로 지정 */
 }
 
 .roadmap-title-contaienr {
+    width: 100%;
     display: flex;
     justify-content: space-between;
+    margin: 0 auto;
 }
 
 .roadmap-title {
@@ -203,19 +208,32 @@ header {
     color: rgb(47, 48, 89);
 }
 
+.arrow-container {
+    display: flex;
+}
+
+.slide-prev:hover {
+    transition: transform 0.5s;
+    transform: translateX(-2px);
+}
+
+.slide-next:hover {
+    transition: transform 0.5s;
+    transform: translateX(2px);
+}
+
 .class-list {
     display: flex;
     list-style: none;
     padding: 1rem 0;
     margin: 0;
-    overflow: hidden;
 }
 
 .class-card {
     width: 240px;
     box-shadow: 10px 10px 10px -5px rgba(25, 42, 70, 0.2);
     border-radius: 8px;
-    margin: 10px;
+    margin: 0 10px;
     transition: transform 0.4s;
 }
 
@@ -238,6 +256,7 @@ header {
 .class-skill {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .class-type {
