@@ -1,0 +1,254 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
+html {
+    overflow: hidden;
+}
+
+body {
+    background: #111111;
+    font-family: "metropolis-regular", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1.765;
+    color: #757575;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.7;
+    background: #464242;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: display 1.2s cubic-bezier(0.22, 0.44, 0, 1);
+}
+
+#preloader.reveal {
+    display: none;
+}
+
+#loader {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.loading-title {
+    color: rgb(241, 238, 238);
+    font-size: 3vh;
+}
+
+.line-scale-pulse-out>div {
+    background-color: #a97cd6;
+    width: 4px;
+    height: 35px;
+    border-radius: 2px;
+    margin: 2px;
+    animation-fill-mode: both;
+    display: inline-block;
+    animation: line-scale-pulse-out 0.9s -0.6s infinite cubic-bezier(0.85, 0.25, 0.37, 0.85);
+}
+
+.line-scale-pulse-out>div:nth-child(2),
+.line-scale-pulse-out>div:nth-child(4) {
+    animation-delay: -0.4s;
+}
+
+.line-scale-pulse-out>div:nth-child(1),
+.line-scale-pulse-out>div:nth-child(5) {
+    animation-delay: -0.2s;
+}
+
+@-webkit-keyframes line-scale-pulse-out {
+    0% {
+        transform: scaley(1);
+    }
+    50% {
+        transform: scaley(0.4);
+    }
+    100% {
+        transform: scaley(1);
+    }
+}
+
+@keyframes line-scale-pulse-out {
+    0% {
+        transform: scaley(1);
+    }
+    50% {
+        transform: scaley(0.4);
+    }
+    100% {
+        transform: scaley(1);
+    }
+}
+
+.background {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: hidden;
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    /* (이미지를 parallax-offset만큼 끌어올리는) 애니메이션 효과를 넣기 위해 background의 크기가 100vh 이상 */
+    height: 130vh;
+    position: fixed;
+    width: 100%;
+    -webkit-transform: translateY(30vh);
+    transform: translateY(30vh);
+    -webkit-transition: all 1.2s cubic-bezier(0.22, 0.44, 0, 1);
+    transition: all 1.2s cubic-bezier(0.22, 0.44, 0, 1);
+}
+
+.background:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.background:first-child {
+    background-image: url(../img/sunset2.png);
+    -webkit-transform: translateY(-15vh);
+    transform: translateY(-15vh);
+}
+
+.background:first-child .content-wrapper {
+    -webkit-transform: translateY(15vh);
+    transform: translateY(15vh);
+}
+
+.background:nth-child(2) {
+    background-image: url(../img/sunset1.png);
+}
+
+.background:nth-child(3) {
+    background-image: url(../img/sunset3.png);
+}
+
+
+/* Set stacking context of slides */
+
+.background:nth-child(1) {
+    z-index: 3;
+}
+
+.background:nth-child(2) {
+    z-index: 2;
+}
+
+.background:nth-child(3) {
+    z-index: 1;
+}
+
+.content-wrapper {
+    height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    text-align: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-flow: column nowrap;
+    flex-flow: column nowrap;
+    color: #fff;
+    font-family: Montserrat;
+    text-transform: uppercase;
+    -webkit-transform: translateY(40vh);
+    transform: translateY(40vh);
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: all 1.7s cubic-bezier(0.22, 0.44, 0, 1);
+    transition: all 1.2s cubic-bezier(0.22, 0.44, 0, 1);
+}
+
+.content-title {
+    font-size: 10vh;
+    line-height: 1.4;
+    transition: font-size 1.7s cubic-bezier(0.22, 0.44, 0, 1);
+}
+
+.content-subtitle {
+    font-size: 4vh;
+    transition: font-size 1.7s cubic-bezier(0.22, 0.44, 0, 1);
+}
+
+
+/* 즉, 화면상에서 parallax-offset / 2 만큼 이미지가 겹쳐있는 것*/
+
+.background.up-scroll {
+    -webkit-transform: translate3d(0, -15vh, 0);
+    transform: translate3d(0, -15vh, 0);
+}
+
+.background.up-scroll .content-wrapper {
+    -webkit-transform: translateY(15vh);
+    transform: translateY(15vh);
+}
+
+.background.up-scroll+.background {
+    -webkit-transform: translate3d(0, 30vh, 0);
+    transform: translate3d(0, 30vh, 0);
+}
+
+.background.up-scroll+.background .content-wrapper {
+    -webkit-transform: translateY(30vh);
+    transform: translateY(30vh);
+}
+
+.background.down-scroll {
+    /* down scroll 시, z-index가 더 큰 이전 background는 화면에서 노출되지 않도록. */
+    -webkit-transform: translate3d(0, -130vh, 0);
+    transform: translate3d(0, -130vh, 0);
+}
+
+.background.down-scroll .content-wrapper {
+    -webkit-transform: translateY(40vh);
+    transform: translateY(40vh);
+}
+
+.background.down-scroll+.background:not(.down-scroll) {
+    -webkit-transform: translate3d(0, -15vh, 0);
+    transform: translate3d(0, -15vh, 0);
+}
+
+.background.down-scroll+.background:not(.down-scroll) .content-wrapper {
+    -webkit-transform: translateY(15vh);
+    transform: translateY(15vh);
+}
+
+@media screen and (max-width:1024px) {
+    .content-title {
+        font-size: 6vh;
+    }
+    .content-subtitle {
+        font-size: 3vh;
+    }
+}
+
+@media screen and (max-width:480px) {
+    .content-title {
+        font-size: 3vh;
+    }
+    .content-subtitle {
+        font-size: 1.5vh;
+    }
+}

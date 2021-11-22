@@ -275,6 +275,16 @@ git remote add origin https://github.com/<본인계정>/<project명>
 
 
 
+### git checkout (브랜치 전환)
+
+아래와 같이 입력하면 새로운 브랜치 경우, commit 시점의 branch가 만들어진다.
+
+```shell
+git checkout -b <브랜치 명> <commit id>
+```
+
+
+
 
 
 
