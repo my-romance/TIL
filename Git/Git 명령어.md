@@ -285,6 +285,26 @@ git checkout -b <브랜치 명> <commit id>
 
 
 
+### git commit 메시지 수정
+
+```shell
+git commit --amend
+```
+
+
+
+### git config 확인
+
+```shell
+git config --list
+```
+
+아래 명령어로 global git config 파일 열 수 있음
+
+```shell
+open ~/.gitconfig
+```
+
 
 
 
