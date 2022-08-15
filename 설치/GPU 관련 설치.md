@@ -10,9 +10,9 @@
 
 2. `ubuntu-drivers devices` 명령어를 통해 어떤 드라이버를 설치하면 좋을지 확인가능
 
-   ![](installation_related_gpu1.png)
+   ![](./images/installation_related_gpu1.png)
 
-   ![](installation_related_gpu2.png)
+   ![](./images/installation_related_gpu2.png)
 
    ⇒ 결과 : 510, 515, 470(가장 추천)
 
