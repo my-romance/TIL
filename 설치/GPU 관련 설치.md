@@ -74,6 +74,18 @@
 
    ![](./images/installation_related_gpu4.png)
 
+
+## pyTorch 설치
+
+## PyTorch cuda 확인
+```python
+import torch
+# torch.cuda.is_available()
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+X_train = torch.FloatTensor([0., 1., 2.])
+X_train = X_train.cuda()
+```
+
 ## 참고자료
 
 - [https://hwk0702.github.io/python/tips/2021/04/23/NVIDEA/](https://hwk0702.github.io/python/tips/2021/04/23/NVIDEA/) (추천)
