@@ -111,6 +111,7 @@
 
 ### poetry로 패키지 설치시, <패키지명> does not contain any element 에러
 - pyproject.toml 문서내 packages가 설정되어 있지만, 설정된 packages의 폴더나 파일이 없는 경우.
+- 해당 폴더나 파일을 만들어주면 해결됨. 또는 poetry로 패키지 설치시 옵션으로 `--no-root`을 추가해주어도 해결되나, 권한 문제가 생길수 있음
 - pyproject.toml 문서내 packages 설정 예시
   ```
   packages = [
