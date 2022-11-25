@@ -106,6 +106,17 @@
 
     ​	
 
+### poetry로 패키지 설치시 같은 이름의 경로, 파일이 존재하는 경우 덮어쓰여질 수 있음
+
+
+### poetry로 패키지 설치시, <패키지명> does not contain any element 에러
+- pyproject.toml 문서내 packages가 설정되어 있지만, 설정된 packages의 폴더나 파일이 없는 경우.
+- pyproject.toml 문서내 packages 설정 예시
+  ```
+  packages = [
+	{ include = "oksusu" }
+   ]
+  ```
   
 
   
